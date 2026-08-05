@@ -1,0 +1,47 @@
+trivy rootfs --scanners vuln --skip-dirs /home --skip-dirs /var/lib/docker --skip-dirs /opt --severity HIGH,CRITICAL --exit-code 1 --format json -o trivy-report.json /
+
+
+jq '
+[
+  .Results[]
+  | select(.Class=="os-pkgs")
+  | .Vulnerabilities[]
+  | select(
+      (.PkgName | startswith("linux-image") or
+       startswith("linux-modules") or
+       startswith("linux-headers") or
+       startswith("kernel"))
+      and
+      (.Severity=="HIGH" or .Severity=="CRITICAL")
+  )
+]
+' trivy-report.json > kernel-vulnerabilities.json
+
+We have create a server audit dashboard. My current setup is working fine,  
+We need to add trivy tool to scan vulnerabilities in installed package specifically kernel packages. we need to filter only kernel related package and remove other vulnerabilities from the generated trivy-report file and after that add only filtered kernel vulnerabilities in the dasboard report with kernel vulnerability.
+
+I have installed trivy on my local machine for testing purpose, Below is the command from which I generated the report and filtered the kernel packages.
+
+trivy rootfs --scanners vuln --skip-dirs /home --skip-dirs /var/lib/docker --skip-dirs /opt --severity HIGH,CRITICAL --exit-code 1 --format json -o trivy-report.json /
+
+jq '
+[
+  .Results[]
+  | select(.Class=="os-pkgs")
+  | .Vulnerabilities[]
+  | select(
+      (.PkgName | startswith("linux-image") or
+       startswith("linux-modules") or
+       startswith("linux-headers") or
+       startswith("kernel"))
+      and
+      (.Severity=="HIGH" or .Severity=="CRITICAL")
+  )
+]
+' trivy-report.json > kernel-vulnerabilities.json
+
+
+
+
+
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'aiGhieh4yuwa';

@@ -1,0 +1,7 @@
+# Copy to .env and fill in real values before `docker compose up`
+
+# Generate with: python -c "import secrets; print(secrets.token_urlsafe(48))"
+JWT_SECRET=svBbKqIClgH6gywJvpDhXyrl_4tQHEWOi5FTvmN7tq9LnCrN8DBd8LqSMLiGsFkc
+
+# Generate with: python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+SECRET_ENCRYPTION_KEY=aRIWUfP8CzR4BvZNAwCrnquIMWLHfOlD4ppnqj-K7EQ=

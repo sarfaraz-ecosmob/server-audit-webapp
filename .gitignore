@@ -1,0 +1,74 @@
+# ──────────────────────────────────────────────
+# Secrets & environment
+# ──────────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+
+# ──────────────────────────────────────────────
+# Local / scratch directories
+# ──────────────────────────────────────────────
+.freebuff/
+backup/
+
+# ──────────────────────────────────────────────
+# Python (backend)
+# ──────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# SQLite databases (dev volume leak)
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# Pytest / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+*.egg-info/
+dist/
+build/
+
+# ──────────────────────────────────────────────
+# Node / Next.js (frontend)
+# ──────────────────────────────────────────────
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/.npm/
+
+# TypeScript incremental build cache
+frontend/tsconfig.tsbuildinfo
+
+# ──────────────────────────────────────────────
+# Docker
+# ──────────────────────────────────────────────
+*.log
+docker/volumes/
+
+# ──────────────────────────────────────────────
+# IDE & editor
+# ──────────────────────────────────────────────
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# ──────────────────────────────────────────────
+# OS
+# ──────────────────────────────────────────────
+.DS_Store
+Thumbs.db

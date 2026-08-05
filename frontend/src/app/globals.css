@@ -1,0 +1,113 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+html, body {
+  background: #0A0D12;
+  color: #E7EBF0;
+}
+
+body {
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+}
+
+.font-mono, code, .mono {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+/* Signature element: a pulse travels along the "wire" from project to server
+   node while a run is queued/running — literal to what the app is doing
+   (opening an SSH connection and running a script), not decorative. */
+@keyframes wire-pulse {
+  0%   { stroke-dashoffset: 40; opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { stroke-dashoffset: 0; opacity: 0; }
+}
+
+.wire-active {
+  stroke-dasharray: 6 4;
+  animation: wire-pulse 1.4s linear infinite;
+}
+
+/* ---- Radar sweep: the centerpiece of the live run visualization. A literal
+   "scanning" motif for "a security scan is actively running on this host". */
+@keyframes radar-spin {
+  to { transform: rotate(360deg); }
+}
+.radar-sweep {
+  animation: radar-spin 2.6s linear infinite;
+  transform-origin: center;
+}
+
+@keyframes radar-ring {
+  0%   { transform: scale(0.4); opacity: 0.6; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+.radar-ring {
+  animation: radar-ring 2.2s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
+  transform-origin: center;
+}
+
+/* ---- Shimmer: for indeterminate progress bars (install/audit in flight) */
+@keyframes shimmer-sweep {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(250%); }
+}
+.shimmer-bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, rgba(79,209,197,0.55), transparent);
+  animation: shimmer-sweep 1.6s ease-in-out infinite;
+}
+
+/* ---- Gentle entrance for cards/rows as they mount */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up {
+  animation: fade-up 0.35s ease-out both;
+}
+
+/* ---- Soft ambient drift for the topbar's background wire grid */
+@keyframes grid-drift {
+  from { background-position: 0 0; }
+  to   { background-position: 40px 40px; }
+}
+.bg-grid-drift {
+  background-image:
+    linear-gradient(rgba(79,209,197,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(79,209,197,0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+  animation: grid-drift 12s linear infinite;
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.5; }
+  50%      { opacity: 1; }
+}
+.glow-pulse {
+  animation: glow-pulse 1.8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wire-active, .radar-sweep, .radar-ring, .shimmer-bar::after,
+  .fade-up, .bg-grid-drift, .glow-pulse {
+    animation: none !important;
+  }
+}
+
+
+::selection {
+  background: rgba(79, 209, 197, 0.25);
+}
+
+:focus-visible {
+  outline: 2px solid #4FD1C5;
+  outline-offset: 2px;
+}
