@@ -22,6 +22,15 @@ export interface Server {
   created_at: string;
 }
 
+export interface KernelVulnerability {
+  id?: string;
+  package?: string;
+  installed?: string;
+  fixed?: string;
+  severity?: string;
+  title?: string;
+}
+
 export interface AuditRunSummary {
   current_phase?: string;
   lynis_score?: number;
@@ -38,6 +47,10 @@ export interface AuditRunSummary {
   audit_timestamp?: string;
   kernel_vulns_count?: number;
   kernel_critical_count?: number;
+  kernel_high_count?: number;
+  kernel_vulnerabilities?: KernelVulnerability[];
+  kernel_scan_skipped?: boolean;
+  kernel_scan_skip_reason?: string;
 }
 
 export interface AuditRun {

@@ -11,6 +11,7 @@ import InstallToolsPanel from "@/components/InstallToolsPanel";
 import RunHistoryTable from "@/components/RunHistoryTable";
 import ServerFormModal from "@/components/ServerFormModal";
 import LiveRunPanel from "@/components/LiveRunPanel";
+import KernelVulnerabilityCard from "@/components/KernelVulnerabilityCard";
 import ActionOverlay from "@/components/ActionOverlay";
 import { Play, RefreshCw, Download, Plug, Pencil, Trash2 } from "lucide-react";
 
@@ -185,6 +186,13 @@ export default function ServerDashboardPage() {
       {lastRun && (lastRun.status === "queued" || lastRun.status === "running") && (
         <LiveRunPanel run={lastRun} />
       )}
+
+      {(() => {
+        const summaryRun = selectedRun ?? latestCompleted;
+        return summaryRun?.run_type === "audit" ? (
+          <KernelVulnerabilityCard summary={summaryRun.summary ?? null} />
+        ) : null;
+      })()}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-6">
         <div className="lg:col-span-2">
