@@ -290,8 +290,10 @@ log "Detecting installed security tools on $OS_PRETTY ..."
         add_tool_status "Trivy" "found" "$TRIVY_BIN" "$("$TRIVY_BIN" --version 2>/dev/null | head -1)" "" ""
         if has_jq; then
             ok "jq found for filtering Trivy results"
+            add_tool_status "jq" "found" "$(command -v jq)" "$(jq --version 2>/dev/null || echo 'unknown')" "" ""
         else
             warn "jq not found - Trivy kernel filtering requires jq (install with: $(install_cmd_for jq jq))"
+            add_tool_status "jq" "skipped" "" "" "Not installed" "$(install_cmd_for jq jq)"
         fi
     else
         warn "Trivy not found - kernel vulnerability scan will be SKIPPED."
@@ -809,10 +811,17 @@ run_trivy_kernel_scan() {
 
     log "Running Trivy vulnerability scan for kernel packages (timeout 15 min)..."
 
-    # Full rootfs scan, skipping noisy dirs, outputting JSON
+    # Full rootfs scan, skipping noisy dirs, outputting JSON.
+    # --timeout is important: trivy's DEFAULT internal timeout is 5 minutes,
+    # which the very first run on a server will blow past while it downloads
+    # its vulnerability DB (100MB+) — the scan then aborts before writing any
+    # output. 900s matches the run_with_timeout wrapper below, so the kill
+    # decision stays with our own timeout.
     local trivy_raw="$TMP_DIR/trivy-report.json"
     run_with_timeout 900 "$TRIVY_BIN" rootfs \
         --scanners vuln \
+        --timeout 900s \
+        --skip-java-db-update \
         --skip-dirs /home \
         --skip-dirs /var/lib/docker \
         --skip-dirs /opt \

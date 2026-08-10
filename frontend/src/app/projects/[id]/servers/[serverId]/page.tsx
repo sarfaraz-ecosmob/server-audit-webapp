@@ -187,13 +187,6 @@ export default function ServerDashboardPage() {
         <LiveRunPanel run={lastRun} />
       )}
 
-      {(() => {
-        const summaryRun = selectedRun ?? latestCompleted;
-        return summaryRun?.run_type === "audit" ? (
-          <KernelVulnerabilityCard summary={summaryRun.summary ?? null} />
-        ) : null;
-      })()}
-
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-6">
         <div className="lg:col-span-2">
           <InstallToolsPanel serverId={serverId} isBusy={isBusy} />
@@ -221,6 +214,13 @@ export default function ServerDashboardPage() {
       <div className="mb-6">
         <RunHistoryTable runs={runs || []} onSelect={setSelectedRun} selectedId={selectedRun?.id} />
       </div>
+
+      {(() => {
+        const summaryRun = selectedRun ?? latestCompleted;
+        return summaryRun?.run_type === "audit" ? (
+          <KernelVulnerabilityCard summary={summaryRun.summary ?? null} />
+        ) : null;
+      })()}
 
       <h2 className="font-medium mb-3 text-sm">
         {selectedRun ? "Selected run" : "Latest run"}
